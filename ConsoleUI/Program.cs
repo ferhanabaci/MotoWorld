@@ -15,22 +15,28 @@ class Program
     private static void CustomerTest()
     {
         MotorcyleManager motorcycleManager = new MotorcyleManager(new EfMotorcyleDal());
-        foreach (var motorcyle in motorcycleManager.GetMotorcyleDetails()) 
+        var result = motorcycleManager.GetMotorcyleDetails();
+        if(result.Success == true)
+        foreach (var motorcyle in result.Data) 
         {
             Console.WriteLine(motorcyle.MotorcyleName+"/"+motorcyle.BrandId);
 
-        }
-    }
-
-    private static void NewMethod()
-    {
-        MotorcyleManager motorcyleManager = new MotorcyleManager(new InMemoryMotorcyleDal());
-
-        foreach (var motorcyle in motorcyleManager.GetAll())
+            }
+        else
         {
-            Console.WriteLine(motorcyle.MotorcyleName);
-
+            Console.WriteLine(result.Message);
         }
     }
+
+    //private static void NewMethod()
+    //{
+    //    MotorcyleManager motorcyleManager = new MotorcyleManager(new InMemoryMotorcyleDal());
+
+    //    foreach (var motorcyle in motorcyleManager.GetAll())
+    //    {
+    //        Console.WriteLine(motorcyle.MotorcyleName);
+
+    //    }
+    //}
 
 }

@@ -19,6 +19,7 @@ namespace Business.Concrete
             _customerDal = customerDal;
                 
         }
+
         public List<Customer> GetAll()
         {//iş kodlar
             return _customerDal.GetAll();

@@ -12,6 +12,6 @@ namespace Business.Abstract
         public List<Customer> GetAll();
 
         public Customer GetById(int id);
-        
+
     }
 }

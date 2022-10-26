@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -18,14 +20,34 @@ namespace Business.Concrete
         {
             _motorcyleDal = motorcyleDal;
         }
-        public List<Motorcycle> GetAll()
+
+        public IResult Add(Motorcycle motorcycle)
         {
-            return _motorcyleDal.GetAll( );
+            if (motorcycle.MotorcyleName.Length < 2)
+                return new ErrorResult(Messages.MotorcycleNameInvalid);
+
+            _motorcyleDal.Add(motorcycle);
+            return new Result(true, Messages.MotorcycleAdded); 
         }
 
-        public List<MotorcyleDetailDto> GetMotorcyleDetails()
+        public IDataResult<List<Motorcycle>> GetAll()
         {
-            return _motorcyleDal.GetMotorcyleDetails();
+            if(DateTime.Now.Hour  == 22)
+            {
+                return new ErrorDataResult<List<Motorcycle>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Motorcycle>>(_motorcyleDal.GetAll(),Messages.MotorcycleListed);
+        }
+
+        public IDataResult<Motorcycle> GetById(int motorcycleId)
+        {
+            return new SuccessDataResult<Motorcycle>(_motorcyleDal.Get(m => m.MotorcycleId == motorcycleId));
+        }
+
+        public IDataResult<List<MotorcyleDetailDto>> GetMotorcyleDetails()
+        {
+            
+            return new SuccessDataResult<List<MotorcyleDetailDto>>(_motorcyleDal.GetMotorcyleDetails());
         }
     }
 }
